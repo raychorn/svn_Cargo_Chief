@@ -1,0 +1,9 @@
+check process munin-node with pidfile /var/run/munin/munin-node.pid
+  start program = "/etc/init.d/munin-node start"
+  stop program = "/etc/init.d/munin-node stop"
+  if cpu > 80% for 5 times within 15 cycles then alert
+  if cpu > 90% for 10 times within 15 cycles then restart
+  if failed host 127.0.0.1 port 8888 protocol HTTP request "/" then restart
+  if totalmem > 50.0 MB for 10 times within 15 cycles then restart
+  group server
+

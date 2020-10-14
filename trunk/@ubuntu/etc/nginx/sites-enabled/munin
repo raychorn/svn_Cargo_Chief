@@ -1,0 +1,7 @@
+server {
+        listen       8888;
+    
+        server_name preview.cargochief.com;
+        root /var/www/www.vyperlogix.com/web/monitoring;
+
+}

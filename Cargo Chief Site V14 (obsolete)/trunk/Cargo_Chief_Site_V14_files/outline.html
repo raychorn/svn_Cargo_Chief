@@ -1,0 +1,2166 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 14">
+<link id=Main-File rel=Main-File href="../Cargo_Chief_Site_V14.html">
+<meta name=Robots content=NoIndex>
+<script src=script.js></script><script><!--
+if( !(IsWin("PPTOtl")||IsWin("PPTNav")||IsWin("PPTOtlNav")) )
+{
+	obj = GetObj("Main-File")
+	parent.location.href=obj.href
+}
+var gOtlHiliteClr="#ffffff",gOtlNormalClr="#000000",gOtlActiveClr="#ffff00",gSelected="",gTxtState=false,gChildEntryTable=new Array()
+function Load()
+{
+	if( IsWin("PPTOtl" ) ){ LoadOtl(); parent.gOtlLoaded=true; return }
+	if( g_supportsPPTHTML ) {
+		if( IsWin("PPTNav" ) ){ LoadNav("NavObj",UpdNav); parent.gNavLoaded=true; return }
+		if( IsWin("PPTOtlNav" ) ){ LoadNav("OtlNavObj",UpdOtlNav); parent.gOtlNavLoaded=true; return }
+	}
+}
+function Upd(){ if( IsWin("PPTNav") ) LoadNav("NavObj",UpdNav) }
+function LoadNav( oId,UpdFunc )
+{
+	document.ondragstart=CancelDrag
+	document.onselectstart=CancelDrag
+	document.body.style.margin=2
+	UpdFunc()
+	obj=document.all.item(oId)
+	obj.style.display="block"
+	obj.style.visibility="visible"
+	document.bgColor="threedface"
+	if( parent.frames["PPTNts"] )
+		notesBtn.style.display = ""
+	if( parent.gHasNarration )
+		nb_voiceBorder.style.display = ""
+}
+function LoadOtl()
+{
+	var otl=GetObj("OtlObj")
+	otl.style.display="block"
+	otl.style.visibility="visible"
+	if( gOtlActiveClr == "" ) gOtlActiveClr=document.linkColor
+	if( gOtlHiliteClr == "" ) gOtlHiliteClr=document.fgColor
+	if( gOtlNormalClr == "" )
+		gOtlNormalClr=document.bgColor
+	else
+		document.bgColor=gOtlNormalClr
+	InitArray()
+	if( ObjExists( parent.gCurSld ) ) {
+		ChangeState( parent.gCurSld,gOtlNormalClr,gOtlHiliteClr )
+		gSelected=parent.gCurSld
+	}
+	else gSelected = -1
+	UpdOtl()
+}
+function UpdOtl(){ UpdIdx(parent.gCurSld) }
+function UpdIdx( idx )
+{
+	if( gSelected != idx ) {
+		if( gSelected > 0 )
+			ChangeState( gSelected,gOtlHiliteClr,gOtlNormalClr )
+		if( ObjExists( idx ) ) {
+			gSelected = idx
+			ChangeState( gSelected,gOtlNormalClr,gOtlHiliteClr )
+		}
+		else gSelected = -1
+	}
+	if( gTxtState != parent.gOtlTxtExp ) {
+		state = "block"
+		if( !parent.gOtlTxtExp )
+			state="none"
+		for(ii=0; ii<gChildEntryTable.length; ii++) {
+			obj=gChildEntryTable[ii];
+			if( obj.id == null ) continue;
+			if( obj.id.indexOf("PPTC") >= 0 )
+				obj.style.display=state;
+		}
+		gTxtState=parent.gOtlTxtExp
+		if( ObjExists( gSelected ) )
+			ChangeState( gSelected,gOtlNormalClr,gOtlHiliteClr )
+	}
+}
+function InitArray()
+{
+	count=0
+	var list=GetTags(document,"DIV");
+	for(ii=0; ii<list.length; ii++) {
+		obj=list.item(ii)
+		if( obj.id == null ) continue
+		if( obj.id.indexOf("PPTC") >= 0 )
+			gChildEntryTable[count++]=obj
+	}
+}
+function ChangeState( idx,fgColor,bgColor )
+{
+	obj=GetObj("PPTL"+idx)
+	obj.style.color=fgColor
+	obj=GetObj("PPTP"+idx)
+	obj.style.backgroundColor=bgColor
+}
+function ChgClr( o,clr ){ if( o.id != "PPTL"+gSelected ) o.style.color=clr }
+function Over( src ){ ChgClr(GetLink(src),gOtlActiveClr) }
+function Out( src ){ ChgClr(GetLink(src),gOtlHiliteClr) }
+function Follow(src){ window.location.href = GetLink(src).href; }
+function ObjExists( ii ) { obj=GetObj("PPTP"+ii ); return( obj ) }
+function GoToSld( href ){ UpdIdx(parent.GetSldNum(href)); parent.GoToSld( href ) }
+function CancelDrag(){ window.event.cancelBubble=true;window.event.returnValue=false}
+function GetLink(src)
+{
+   if(src.tagName=="A") return src
+   else return GetTags(src,"A").item(0)
+}
+function UpdNav()
+{
+	txt = "<center>";
+	if( parent.GetHrefObj( parent.gCurSld ).mOrigVis == 1 )
+		txt += "Slide " + parent.GetCurSldNum() + " of " + parent.GetNumSlds()
+	else
+		txt += "Hidden Slide"
+	txt += "</center>";
+	nav_text.innerHTML = txt;
+	if( !parent.HasPrevSld() )
+		gBtnArr["nb_prev"].Enabled(0)
+	else
+		gBtnArr["nb_prev"].Enabled(1)
+	if( !parent.HasNextSld() )
+		gBtnArr["nb_next"].Enabled(0)
+	else
+		gBtnArr["nb_next"].Enabled(1)
+	gBtnArr["nb_nts"].Enabled(1)
+	gBtnArr["nb_ntsBorder"].SetFlag( parent.gHasNts )
+	gBtnArr["nb_sldshw"].Enabled(1)
+	gBtnArr["nb_voice"].Enabled(1)
+}
+function ExecBtn()
+{
+	if (event.keyCode == 13)
+	{
+		BtnOnDown();
+		BtnOnUp();
+	}
+}
+function UpdOtlNav()
+{
+	gBtnArr["nb_otl"].SetEnabled();
+	if( parent.gOtlOpen )
+		gBtnArr["nb_otlTxt"].Enabled( true );
+	else
+		document.all.item("nb_otlTxtBorder").style.visibility = "hidden";
+}
+
+//--></script>
+<style>
+<!--.PTxt
+	{position:relative;
+	width:100%;
+	margin-top:5px;
+	padding-left:2px;
+	font-weight:bold;}
+.CTxt
+	{position:relative;
+	width:100%;
+	margin-top:5px;}
+a
+	{color:white;
+	text-decoration:none;}
+ul
+	{color:white;
+	margin-bottom:0px;
+	margin-left:20px;}
+.sldNum
+	{margin-top:5px;
+	color:white;}
+.button
+	{position:absolute;
+	width:32px;
+	height:20px;
+	border-style:solid;
+	border-width:1px;
+	border-color:threedface;}
+-->
+</style>
+</head>
+
+<body onload="Load()" style='margin:2px'>
+
+<div id=NavObj onload="Load()" onmouseover="BtnOnOver()"
+onmousedown="BtnOnDown()" onmouseout="BtnOnOut()" onmouseup="BtnOnUp()"
+onkeypress="ExecBtn()" style='display:none;visibility:hidden'>
+<table id="notesBtn" style='display:none;position:relative;width:55px' align=left cellpadding=0
+ cellspacing=0>
+ <td nowrap>
+ <div id="nb_ntsElem" title="Show/Hide
+Notes" align=center style='position:relative;margin-left:5px;margin-right:5px;padding:3px;
+ font-family:Arial;color:buttontext;font-size:9pt; cursor:default'>
+ <img src="notes_flag.gif" id="nb_nts" style='display:none'> &nbsp;Notes</div>
+ <div id="nb_ntsBorder" title ="Show/Hide
+Notes" onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=1 style='position:absolute;top:0%;left:0%;width:100%;height:20px'>
+
+ </div>
+ </td>
+</table>
+
+
+<table style='position:relative;width:70px' align=right cellpadding=0 cellspacing=0>
+ <td nowrap>
+ <div id="nb_sldshwText" title="Full Screen Slide Show" align=center style='position:relative;margin-left:20px;padding:3px;
+ font-family:Arial;color:buttontext;font-size:9pt;cursor:default'>Slide
+Show</div>
+ <div id="nb_sldshwBorder" title="Full Screen Slide Show" onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=5 style='position:absolute;top:0%;left:0%;width:100%;height:20px'>
+ <div style='position:absolute;clip:rect(0px, 18px, 18px, 0px)'><img
+ src="buttons.gif" id="nb_sldshw" style='position:relative;left:-254px'></div>
+ </div>
+ </td>
+ <td>
+ <div id="nb_voiceBorder" style='display:none;position:absolute;top:0;left:-40px;
+ width:20px;height:20px' onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=4 class=button>
+ <div style='position:absolute;clip:rect(0px, 18px, 18px, 0px)'><img
+ src="buttons.gif" id="nb_voice" title="Pause/Play Narration" style='position:
+ relative;left:-290px'></div>
+ </div>
+ </td>
+</table>
+
+<table style='position:relative' align=center cellpadding=0 cellspacing=0>
+ <td nowrap>
+ <div id="nb_prevBorder" onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=2 class=button style='left:-30px'>
+ <div style='position:absolute;clip:rect(0px, 30px, 18px, 0px)'><img
+ src="buttons.gif" id="nb_prev" title="Previous Slide" style='position:relative;
+ left:0px'></div>
+ </div>
+ <span id="nav_text" style='position:relative;top:3px;width:100px;font-family:
+ Arial;color:buttontext;font-size:9pt'></span>
+ <div id="nb_nextBorder" onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=3 class=button>
+ <div style='position:absolute;clip:rect(0px, 30px, 18px, 0px)'><img
+ src="buttons.gif" id="nb_next" title="Next Slide" style='position:relative;
+ left:-90px'></div>
+ </div>
+ </td>
+</table>
+</div>
+
+<div id=OtlNavObj onload="Load()" onmouseover="BtnOnOver()"
+onmousedown="BtnOnDown()" onmouseout="BtnOnOut()" onmouseup="BtnOnUp()"
+onkeypress="ExecBtn()" style='display:none;visibility:hidden'>
+
+<table style='position:relative;width:70px' align=left cellpadding=0 cellspacing=0>
+ <td nowrap><div title="Show/Hide
+Outline" id="nb_otl" onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=11
+ style='position:absolute;top:0%;left:0%;width:100%;height:100%;cursor:default'>
+ <div id="nb_otlElem" align=center style='position:relative;padding:3px;font-family:Arial;
+ color:buttontext;font-size:9pt'>Outline</div></div>
+ </td>
+</table>
+
+<table style='position:relative' align=center cellpadding=0 cellspacing=0>
+ <td>
+ <div style='position:absolute;left:-18px;width:24px;height:20px;border-style:
+ solid;border-width:1px;border-color:threedface' onfocus="BtnOnOver()" onblur="BtnOnOut()" TABINDEX=12 id="nb_otlTxtBorder">
+ <div style='position:absolute;clip:rect(0px, 22px, 18px, 0px)'><img
+ src=buttons.gif id="nb_otlTxt" title="Expand/Collapse Outline"
+ style='position:relative;left:-157px'></div>
+ </div>
+ </td>
+</table>
+
+</div>
+
+<div id=OtlObj style='display:none;visibility:hidden;'>
+
+
+<table width="100%" style='font-family:Arial;font-size:9pt'>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>1</font></div>
+  </td>
+  <td width="100%">
+  <div id=PPTP1 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0122.html');" id=PPTL1><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>2</font></div>
+  </td>
+  <td>
+  <div id=PPTP2 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0013.html');" id=PPTL2><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>3</font></div>
+  </td>
+  <td>
+  <div id=PPTP3 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0132.html');" id=PPTL3><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>4</font></div>
+  </td>
+  <td>
+  <div id=PPTP4 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0137.html');" id=PPTL4><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>5</font></div>
+  </td>
+  <td>
+  <div id=PPTP5 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0138.html');" id=PPTL5><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>6</font></div>
+  </td>
+  <td>
+  <div id=PPTP6 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0139.html');" id=PPTL6><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>7</font></div>
+  </td>
+  <td>
+  <div id=PPTP7 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0133.html');" id=PPTL7><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>8</font></div>
+  </td>
+  <td>
+  <div id=PPTP8 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0134.html');" id=PPTL8><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>9</font></div>
+  </td>
+  <td>
+  <div id=PPTP9 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0135.html');" id=PPTL9><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>10</font></div>
+  </td>
+  <td>
+  <div id=PPTP10 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0136.html');" id=PPTL10><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>11</font></div>
+  </td>
+  <td>
+  <div id=PPTP11 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0006.html');" id=PPTL11><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>12</font></div>
+  </td>
+  <td>
+  <div id=PPTP12 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0020.html');" id=PPTL12><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>13</font></div>
+  </td>
+  <td>
+  <div id=PPTP13 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0022.html');" id=PPTL13><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>14</font></div>
+  </td>
+  <td>
+  <div id=PPTP14 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0025.html');" id=PPTL14><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>15</font></div>
+  </td>
+  <td>
+  <div id=PPTP15 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0174.html');" id=PPTL15><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>16</font></div>
+  </td>
+  <td>
+  <div id=PPTP16 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0173.html');" id=PPTL16><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>17</font></div>
+  </td>
+  <td>
+  <div id=PPTP17 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0151.html');" id=PPTL17><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>18</font></div>
+  </td>
+  <td>
+  <div id=PPTP18 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0152.html');" id=PPTL18><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>19</font></div>
+  </td>
+  <td>
+  <div id=PPTP19 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0155.html');" id=PPTL19><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>20</font></div>
+  </td>
+  <td>
+  <div id=PPTP20 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0175.html');" id=PPTL20><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>21</font></div>
+  </td>
+  <td>
+  <div id=PPTP21 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0153.html');" id=PPTL21><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>22</font></div>
+  </td>
+  <td>
+  <div id=PPTP22 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0154.html');" id=PPTL22><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>23</font></div>
+  </td>
+  <td>
+  <div id=PPTP23 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0156.html');" id=PPTL23><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>24</font></div>
+  </td>
+  <td>
+  <div id=PPTP24 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0144.html');" id=PPTL24><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>25</font></div>
+  </td>
+  <td>
+  <div id=PPTP25 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0145.html');" id=PPTL25><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>26</font></div>
+  </td>
+  <td>
+  <div id=PPTP26 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0146.html');" id=PPTL26><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>27</font></div>
+  </td>
+  <td>
+  <div id=PPTP27 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0147.html');" id=PPTL27><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>28</font></div>
+  </td>
+  <td>
+  <div id=PPTP28 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0158.html');" id=PPTL28><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>29</font></div>
+  </td>
+  <td>
+  <div id=PPTP29 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0157.html');" id=PPTL29><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>30</font></div>
+  </td>
+  <td>
+  <div id=PPTP30 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0159.html');" id=PPTL30><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>31</font></div>
+  </td>
+  <td>
+  <div id=PPTP31 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0166.html');" id=PPTL31><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>32</font></div>
+  </td>
+  <td>
+  <div id=PPTP32 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0167.html');" id=PPTL32><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>33</font></div>
+  </td>
+  <td>
+  <div id=PPTP33 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0240.html');" id=PPTL33><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>34</font></div>
+  </td>
+  <td>
+  <div id=PPTP34 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0168.html');" id=PPTL34><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>35</font></div>
+  </td>
+  <td>
+  <div id=PPTP35 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0169.html');" id=PPTL35><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>36</font></div>
+  </td>
+  <td>
+  <div id=PPTP36 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0170.html');" id=PPTL36><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>37</font></div>
+  </td>
+  <td>
+  <div id=PPTP37 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0171.html');" id=PPTL37><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>38</font></div>
+  </td>
+  <td>
+  <div id=PPTP38 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0172.html');" id=PPTL38><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>39</font></div>
+  </td>
+  <td>
+  <div id=PPTP39 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0241.html');" id=PPTL39><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>40</font></div>
+  </td>
+  <td>
+  <div id=PPTP40 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0148.html');" id=PPTL40><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>41</font></div>
+  </td>
+  <td>
+  <div id=PPTP41 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0178.html');" id=PPTL41><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>42</font></div>
+  </td>
+  <td>
+  <div id=PPTP42 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0179.html');" id=PPTL42><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>43</font></div>
+  </td>
+  <td>
+  <div id=PPTP43 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0180.html');" id=PPTL43><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>44</font></div>
+  </td>
+  <td>
+  <div id=PPTP44 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0181.html');" id=PPTL44><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>45</font></div>
+  </td>
+  <td>
+  <div id=PPTP45 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0186.html');" id=PPTL45><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>46</font></div>
+  </td>
+  <td>
+  <div id=PPTP46 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0188.html');" id=PPTL46><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>47</font></div>
+  </td>
+  <td>
+  <div id=PPTP47 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0184.html');" id=PPTL47><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>48</font></div>
+  </td>
+  <td>
+  <div id=PPTP48 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0185.html');" id=PPTL48><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>49</font></div>
+  </td>
+  <td>
+  <div id=PPTP49 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0189.html');" id=PPTL49><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>50</font></div>
+  </td>
+  <td>
+  <div id=PPTP50 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0190.html');" id=PPTL50><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>51</font></div>
+  </td>
+  <td>
+  <div id=PPTP51 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0227.html');" id=PPTL51><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>52</font></div>
+  </td>
+  <td>
+  <div id=PPTP52 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0192.html');" id=PPTL52><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>53</font></div>
+  </td>
+  <td>
+  <div id=PPTP53 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0193.html');" id=PPTL53><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>54</font></div>
+  </td>
+  <td>
+  <div id=PPTP54 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0194.html');" id=PPTL54><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>55</font></div>
+  </td>
+  <td>
+  <div id=PPTP55 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0196.html');" id=PPTL55><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>56</font></div>
+  </td>
+  <td>
+  <div id=PPTP56 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0197.html');" id=PPTL56><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>57</font></div>
+  </td>
+  <td>
+  <div id=PPTP57 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0177.html');" id=PPTL57><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>58</font></div>
+  </td>
+  <td>
+  <div id=PPTP58 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0198.html');" id=PPTL58><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>59</font></div>
+  </td>
+  <td>
+  <div id=PPTP59 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0200.html');" id=PPTL59><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>60</font></div>
+  </td>
+  <td>
+  <div id=PPTP60 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0201.html');" id=PPTL60><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>61</font></div>
+  </td>
+  <td>
+  <div id=PPTP61 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0202.html');" id=PPTL61><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>62</font></div>
+  </td>
+  <td>
+  <div id=PPTP62 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0203.html');" id=PPTL62><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>63</font></div>
+  </td>
+  <td>
+  <div id=PPTP63 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0213.html');" id=PPTL63><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>64</font></div>
+  </td>
+  <td>
+  <div id=PPTP64 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0204.html');" id=PPTL64><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>65</font></div>
+  </td>
+  <td>
+  <div id=PPTP65 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0205.html');" id=PPTL65><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>66</font></div>
+  </td>
+  <td>
+  <div id=PPTP66 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0214.html');" id=PPTL66><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>67</font></div>
+  </td>
+  <td>
+  <div id=PPTP67 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0208.html');" id=PPTL67><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>68</font></div>
+  </td>
+  <td>
+  <div id=PPTP68 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0209.html');" id=PPTL68><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>69</font></div>
+  </td>
+  <td>
+  <div id=PPTP69 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0210.html');" id=PPTL69><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>70</font></div>
+  </td>
+  <td>
+  <div id=PPTP70 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0211.html');" id=PPTL70><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>71</font></div>
+  </td>
+  <td>
+  <div id=PPTP71 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0212.html');" id=PPTL71><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>72</font></div>
+  </td>
+  <td>
+  <div id=PPTP72 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0239.html');" id=PPTL72><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>73</font></div>
+  </td>
+  <td>
+  <div id=PPTP73 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0215.html');" id=PPTL73><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>74</font></div>
+  </td>
+  <td>
+  <div id=PPTP74 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0224.html');" id=PPTL74><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>75</font></div>
+  </td>
+  <td>
+  <div id=PPTP75 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0216.html');" id=PPTL75><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>76</font></div>
+  </td>
+  <td>
+  <div id=PPTP76 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0217.html');" id=PPTL76><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>77</font></div>
+  </td>
+  <td>
+  <div id=PPTP77 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0218.html');" id=PPTL77><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>78</font></div>
+  </td>
+  <td>
+  <div id=PPTP78 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0220.html');" id=PPTL78><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>79</font></div>
+  </td>
+  <td>
+  <div id=PPTP79 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0221.html');" id=PPTL79><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>80</font></div>
+  </td>
+  <td>
+  <div id=PPTP80 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0222.html');" id=PPTL80><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>81</font></div>
+  </td>
+  <td>
+  <div id=PPTP81 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0223.html');" id=PPTL81><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>82</font></div>
+  </td>
+  <td>
+  <div id=PPTP82 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0225.html');" id=PPTL82><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>83</font></div>
+  </td>
+  <td>
+  <div id=PPTP83 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0228.html');" id=PPTL83><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>84</font></div>
+  </td>
+  <td>
+  <div id=PPTP84 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0226.html');" id=PPTL84><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>85</font></div>
+  </td>
+  <td>
+  <div id=PPTP85 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0229.html');" id=PPTL85><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>86</font></div>
+  </td>
+  <td>
+  <div id=PPTP86 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0230.html');" id=PPTL86><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>87</font></div>
+  </td>
+  <td>
+  <div id=PPTP87 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0231.html');" id=PPTL87><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>88</font></div>
+  </td>
+  <td>
+  <div id=PPTP88 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0233.html');" id=PPTL88><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>89</font></div>
+  </td>
+  <td>
+  <div id=PPTP89 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0234.html');" id=PPTL89><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>90</font></div>
+  </td>
+  <td>
+  <div id=PPTP90 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0199.html');" id=PPTL90><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>91</font></div>
+  </td>
+  <td>
+  <div id=PPTP91 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0165.html');" id=PPTL91><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>92</font></div>
+  </td>
+  <td>
+  <div id=PPTP92 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0235.html');" id=PPTL92><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>93</font></div>
+  </td>
+  <td>
+  <div id=PPTP93 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0236.html');" id=PPTL93><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>94</font></div>
+  </td>
+  <td>
+  <div id=PPTP94 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0237.html');" id=PPTL94><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>95</font></div>
+  </td>
+  <td>
+  <div id=PPTP95 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0238.html');" id=PPTL95><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>96</font></div>
+  </td>
+  <td>
+  <div id=PPTP96 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0176.html');" id=PPTL96><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>97</font></div>
+  </td>
+  <td>
+  <div id=PPTP97 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0045.html');" id=PPTL97><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>98</font></div>
+  </td>
+  <td>
+  <div id=PPTP98 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0120.html');" id=PPTL98><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>99</font></div>
+  </td>
+  <td>
+  <div id=PPTP99 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0126.html');" id=PPTL99><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>100</font></div>
+  </td>
+  <td>
+  <div id=PPTP100 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0125.html');" id=PPTL100><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>101</font></div>
+  </td>
+  <td>
+  <div id=PPTP101 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0131.html');" id=PPTL101><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>102</font></div>
+  </td>
+  <td>
+  <div id=PPTP102 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0130.html');" id=PPTL102><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>103</font></div>
+  </td>
+  <td>
+  <div id=PPTP103 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0127.html');" id=PPTL103><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>104</font></div>
+  </td>
+  <td>
+  <div id=PPTP104 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0129.html');" id=PPTL104><span
+  style='mso-spacerun:yes'> </span></a></font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>105</font></div>
+  </td>
+  <td>
+  <div id=PPTP105 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0002.html');" id=PPTL105>Cargo Chief Site Spec
+  v1</a></font></div>
+  <div id=PPTC105 class=CTxt style='display:none'><font size=2>
+  <ul>
+   <li>This spec will guide UI development and site design</li>
+   <li>The site will be hosted by a third party, like GoDaddy or Amazon</li>
+   <li>The site will initially handle:</li>
+   <ul>
+    <li>5 simultaneous users</li>
+    <li>1,000 shippers</li>
+    <li>1,000 truckers</li>
+    <li>10,000 bids</li>
+    <li>10,000 loads</li>
+   </ul>
+   <li>The site will back up data hourly or more frequently</li>
+   <li>Would like to have some fail over to another site</li>
+   <li>77% of websites are PHP, shall we use that http://w3techs.com/technologies/details/pl-php/all/all</li>
+   <li>Simplicity is key, think Hipmunk, Groupon, etc</li>
+   <li>We will want etrust and BBB logos to get folks comfortable with a new
+       site</li>
+   <li>We will want to use HTTPS for the credit card area</li>
+   <li>“Next” is just scrolling</li>
+   <li>Input boxes should be big text 16 or larger font</li>
+   <li>Work on IE 6,7,8; FireFox 4,5,6,7; Safari ?, Chrome?</li>
+   <li>Our blue is PMS 541 (#003f77 ), logo coming, our background is light
+       grey, http://www.color-hex.com/color/ddd8ce, Light grey #2, (#ddd1c1)</li>
+   <li>Top level bar is PMS 541 with white text, second level is PMS 5425
+       (#8499a5)</li>
+   <li>Good to use black text in white text boxes, hipmunk, apple, groupon</li>
+   <br>
+   <br>
+   <ul>
+    <br>
+   </ul>
+  </ul>
+  </font></div>
+  </td>
+ </tr>
+ <tr onmouseover="Over(this)" onmouseout="Out(this)" onclick="Follow(this)"
+  style='cursor:hand'>
+  <td align=right valign=top>
+  <div class=sldNum><font size=2>106</font></div>
+  </td>
+  <td>
+  <div id=PPTP106 class=PTxt><font size=2><a
+  href="javascript:GoToSld('slide0012.html');" id=PPTL106>images</a></font></div>
+  <div id=PPTC106 class=CTxt style='display:none'><font size=2>
+  <ul>
+   <li>Home page, trucks in a row:</li>
+   <ul>
+    <li>http://www.istockphoto.com/stock-photo-14326601-trucks-on-freeway.php?st=ae0ebfb<span
+        style='mso-spacerun:yes'>      </span>	 http://www.google.com/imgres?q=white+trucks+highway&amp;um=1&amp;hl=en&amp;client=firefox-a&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=U3_7c6UUn-uT8M:&amp;imgrefurl=http://depositphotos.com/2961933/stock-photo-Caravan-of-white-trucks-on-highway.html&amp;docid=PI_1t4N3H2lUJM&amp;w=450&amp;h=325&amp;ei=SX2QTtzpEI_WiAKp9KHNCA&amp;zoom=1&amp;iact=hc&amp;vpx=86&amp;vpy=145&amp;dur=690&amp;hovh=191&amp;hovw=264&amp;tx=124&amp;ty=123&amp;page=1&amp;tbnh=123&amp;tbnw=156&amp;start=0&amp;ndsp=20&amp;ved=1t:429,r:0,s:0</li>
+   </ul>
+   <li>Pallets of shipments ready to go:<span style='mso-spacerun:yes'> 
+       </span>http://www.google.com/imgres?q=shipments&amp;um=1&amp;hl=en&amp;client=firefox-a&amp;sa=N&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=sG0mzplsrTqj9M:&amp;imgrefurl=http://shop.designerplumbing.com/store/CTGY/All_Farm_Sinks.html&amp;docid=_A34xpIvjO0bCM&amp;w=800&amp;h=455&amp;ei=q_2QTsSHDe3KiALWnN2LDQ&amp;zoom=1&amp;iact=hc&amp;vpx=458&amp;vpy=430&amp;dur=2997&amp;hovh=169&amp;hovw=298&amp;tx=160&amp;ty=102&amp;page=1&amp;tbnh=93&amp;tbnw=164&amp;start=0&amp;ndsp=20&amp;ved=1t:429,r:12,s:0</li>
+   <li>Truck for sign up as a trucker:<span style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?q=truck+on+a+highway&amp;num=10&amp;um=1&amp;hl=en&amp;client=firefox-a&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=WjKDWbuMgwLg5M:&amp;imgrefurl=http://www.automotoportal.com/article/freightliner-trucks-introduces-ground-breaking-new-on-highway-truck&amp;docid=Oca-uV6_DyzX7M&amp;w=470&amp;h=229&amp;ei=NTeRTu6vPKPhsQK63PSWAQ&amp;zoom=1&amp;iact=hc&amp;vpx=707&amp;vpy=164&amp;dur=3897&amp;hovh=157&amp;hovw=322&amp;tx=194&amp;ty=95&amp;sqi=2&amp;page=1&amp;tbnh=83&amp;tbnw=170&amp;start=0&amp;ndsp=20&amp;ved=1t:429,r:4,s:0</li>
+   <li><span style='mso-spacerun:yes'> </span>stop watch on quick quote:<span
+       style='mso-spacerun:yes'>   </span>http://www.google.com/imgres?q=stopwatch+on+white&amp;hl=en&amp;client=firefox-a&amp;hs=J9Q&amp;sa=X&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;prmd=imvns&amp;tbnid=aP23UBverMxpvM:&amp;imgrefurl=http://www.shutterstock.com/pic-58880834/stock-photo--seconds-isolated-stopwatch-on-white-clipping-path-included-computer-generated-image.html&amp;docid=kUfKI-ihV6DlZM&amp;imgurl=http://image.shutterstock.com/display_pic_with_logo/76674/76674,1281565052,2/stock-photo--seconds-isolated-stopwatch-on-white-clipping-path-included-computer-generated-image-58880834.jpg&amp;w=450&amp;h=470&amp;ei=PpyZToKuA8KOiAL2yOC3DQ&amp;zoom=1&amp;iact=rc&amp;dur=819&amp;sig=110732375137062013521&amp;page=4&amp;tbnh=154&amp;tbnw=100&amp;start=52&amp;ndsp=15&amp;ved=1t:429,r:11,s:52&amp;tx=45&amp;ty=62</li>
+   <li><span style='mso-spacerun:yes'> </span>Email logo:<span
+       style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?q=email+icon&amp;hl=en&amp;client=firefox-a&amp;hs=mN0&amp;sa=X&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;prmd=imvns&amp;tbnid=UuGYDYWwg73N4M:&amp;imgrefurl=http://www.shutterstock.com/pic-50769277/stock-photo-e-mail-icon.html&amp;docid=NlmvDmbl4KMeEM&amp;imgurl=http://image.shutterstock.com/display_pic_with_logo/354067/354067,1271085499,7/stock-photo-e-mail-icon-50769277.jpg&amp;w=450&amp;h=470&amp;ei=Sa2bTqLEH-LkiAKUidmiDQ&amp;zoom=1&amp;iact=hc&amp;vpx=442&amp;vpy=219&amp;dur=1843&amp;hovh=229&amp;hovw=220&amp;tx=116&amp;ty=146&amp;sig=110732375137062013521&amp;page=4&amp;tbnh=158&amp;tbnw=155&amp;start=52&amp;ndsp=15&amp;ved=1t:429,r:2,s:52</li>
+   <li><span style='mso-spacerun:yes'> </span>cargo on pallet:<span
+       style='mso-spacerun:yes'>  </span>http://www.okcdc.com/cdc/dealercatalog/policy/order.htm<span
+       style='mso-spacerun:yes'> 
+       </span>http://www.okcdc.com/cdc/dealercatalog/policy/images/pallet.gif</li>
+   <li><span style='mso-spacerun:yes'> </span>TL logo: http://www.thinkstockphotos.com/image/stock-photo-semi-truck-over-white-background/104447884/popup?al=skd188674sdc,200317944-001,106517145,94311536,105888432,105888439,94556032,105673050,91607816,101792802,105671813,101792791,95049598,103997137,105672111,109215614,100752867,96398916,95014666,95012773,104772250,93490435,109213271,95012774,104294381,87520320,105180204,100097971,95015074,96398918,87657438,95017916,95012910,94068857,92173829,94113793,87626676,91382072,108687698,106509984,95406419,106444932,95629160,95016341,95012821,95328961,100566759,92236384,112269326,104746281,100566747,104447884,95012827,91518314,87592919,108717118,108676554,95399433,94375691,87592904&amp;sq=truck%20on%20white/f=PIHV</li>
+   <li>Truck Diagram:<span style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?hl=en&amp;client=firefox-a&amp;hs=KTT&amp;sa=X&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;prmd=imvns&amp;tbnid=CGYMvfbBCOL7-M:&amp;imgrefurl=http://en.wikipedia.org/wiki/File:Conventional_18-wheeler_truck_diagram.PNG&amp;docid=d3nZXHbpMIjpRM&amp;imgurl=http://upload.wikimedia.org/wikipedia/commons/8/8f/Conventional_18-wheeler_truck_diagram.PNG&amp;w=415&amp;h=300&amp;ei=fxy-Tub1BqqfiQLW-fmTAw&amp;zoom=1&amp;iact=hc&amp;vpx=493&amp;vpy=153&amp;dur=596&amp;hovh=123&amp;hovw=170&amp;tx=167&amp;ty=118&amp;sig=110732375137062013521&amp;page=1&amp;tbnh=123&amp;tbnw=170&amp;start=0&amp;ndsp=21&amp;ved=1t:429,r:2,s:0</li>
+   <li>Side view truck:<span style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?num=10&amp;um=1&amp;hl=en&amp;client=firefox-a&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=KLp3V8iNdUjjKM:&amp;imgrefurl=http://www.superstock.com/stock-photos-images/4107-21292&amp;docid=6zcz_2WKiSg1aM&amp;imgurl=http://wwwdelivery.superstock.com/WI/223/4107/PreviewComp/SuperStock_4107-21292.jpg&amp;w=350&amp;h=233&amp;ei=9mrITtWrKurXiALguNTMDw&amp;zoom=1&amp;iact=hc&amp;vpx=754&amp;vpy=425&amp;dur=4453&amp;hovh=183&amp;hovw=275&amp;tx=141&amp;ty=96&amp;sig=110732375137062013521&amp;sqi=2&amp;page=1&amp;tbnh=155&amp;tbnw=234&amp;start=0&amp;ndsp=12&amp;ved=1t:429,r:11,s:0</li>
+   <li><span style='mso-spacerun:yes'> </span>Money saving:<span
+       style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?um=1&amp;hl=en&amp;client=firefox-a&amp;sa=N&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=8pw7InOSrD8XEM:&amp;imgrefurl=http://www.detroitrunner.com/2011/09/register-for-race-year-early.html&amp;docid=ZdvEhfZYS70duM&amp;imgurl=http://3.bp.blogspot.com/-P_5c27MiNTc/TnCJExxyKjI/AAAAAAAAAx8/pUyEJ0U3N0Y/s1600/save-money.jpg&amp;w=668&amp;h=619&amp;ei=ayXJTqDYBKGliQKog9m8Dw&amp;zoom=1&amp;iact=hc&amp;vpx=796&amp;vpy=225&amp;dur=11425&amp;hovh=216&amp;hovw=233&amp;tx=131&amp;ty=121&amp;sig=110732375137062013521&amp;page=4&amp;tbnh=157&amp;tbnw=180&amp;start=45&amp;ndsp=15&amp;ved=1t:429,r:4,s:45</li>
+   <li><span style='mso-spacerun:yes'> </span>cargo in warehouse:<span
+       style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?num=10&amp;um=1&amp;hl=en&amp;client=firefox-a&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=MW67HArbQ_TCXM:&amp;imgrefurl=http://www.byklines.co.kr/4_ccc/4_ccc_02.htm&amp;docid=y1ERTN9ROow-wM&amp;imgurl=http://www.byklines.co.kr/4_ccc/4_bin/4_c_cf01.jpg&amp;w=838&amp;h=548&amp;ei=fADNTprtGomliQLYsO3UCw&amp;zoom=1&amp;iact=hc&amp;vpx=89&amp;vpy=151&amp;dur=272&amp;hovh=181&amp;hovw=278&amp;tx=193&amp;ty=67&amp;sig=110732375137062013521&amp;sqi=2&amp;page=1&amp;tbnh=124&amp;tbnw=176&amp;start=0&amp;ndsp=20&amp;ved=1t:429,r:0,s:0</li>
+   <li><span style='mso-spacerun:yes'> </span>Truck in moutains:<span
+       style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?um=1&amp;hl=en&amp;client=firefox-a&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;tbnid=4sL9jkkREOhHtM:&amp;imgrefurl=http://www.driverscdlstaffing.com/a-commercial-drivers-license-cdl-is-required-to-operate-a-commercial-vehicle/truck/&amp;docid=LOLctBnAY2aL8M&amp;imgurl=http://www.driverscdlstaffing.com/wp-content/uploads/2011/11/truck.jpg&amp;w=570&amp;h=400&amp;ei=AArNTuTvEaihiQKnurHpCw&amp;zoom=1&amp;iact=hc&amp;vpx=761&amp;vpy=187&amp;dur=9716&amp;hovh=188&amp;hovw=268&amp;tx=222&amp;ty=80&amp;sig=110732375137062013521&amp;page=5&amp;tbnh=157&amp;tbnw=231&amp;start=57&amp;ndsp=14&amp;ved=1t:429,r:3,s:57</li>
+   <li><span style='mso-spacerun:yes'> </span>cartoon of truck:<span
+       style='mso-spacerun:yes'>  </span>http://www.google.com/imgres?hl=en&amp;client=firefox-a&amp;hs=nLM&amp;sa=X&amp;rls=org.mozilla:en-US:official&amp;biw=1067&amp;bih=732&amp;tbm=isch&amp;prmd=imvns&amp;tbnid=a9Hknl4jhrlW1M:&amp;imgrefurl=http://us.fotolia.com/id/37521315&amp;docid=x2u0YLtehO5NuM&amp;imgurl=http://t2.ftcdn.net/jpg/00/37/52/13/400_F_37521315_deockA1v2EFP9yuhDsmPu5bo4LcDNhHq.jpg&amp;w=400&amp;h=240&amp;ei=wIs6T-nTB4eYiQKow5GTDA&amp;zoom=1&amp;iact=hc&amp;vpx=268&amp;vpy=176&amp;dur=604&amp;hovh=174&amp;hovw=290&amp;tx=188&amp;ty=72&amp;sig=110732375137062013521&amp;page=10&amp;tbnh=145&amp;tbnw=241&amp;start=156&amp;ndsp=16&amp;ved=1t:429,r:9,s:156</li>
+   <li><span style='mso-spacerun:yes'> </span>cartoon of boxes on pallets:<span
+       style='mso-spacerun:yes'>  </span>http://www.dreamstime.com/royalty-free-stock-photography-wooden-pallet-with-boxes-image18611527</li>
+   <li></li>
+   <li></li>
+   <li></li>
+   <li></li>
+   <li></li>
+  </ul>
+  </font></div>
+  </td>
+ </tr>
+</table>
+
+
+
+</div>
+
+<div style='display:none'><a href=master03.html></a><a href=master03.xml></a><a
+href=pres.xml></a><a href=slide0122.html></a><a href="slide0122_image001.png"></a><a
+href="slide0122_image002.png"></a><a href="slide0122_image003.png"></a><a
+href="slide0122_image004.png"></a><a href="slide0122_image005.png"></a><a
+href="slide0122_image006.png"></a><a href="slide0122_image007.png"></a><a
+href="slide0122_image008.png"></a><a href="slide0122_image009.png"></a><a
+href="slide0122_image010.png"></a><a href="slide0122_image011.jpg"></a><a
+href="slide0122_image012.png"></a><a href="slide0122_image013.png"></a><a
+href="slide0122_image014.png"></a><a href="slide0122_image015.jpg"></a><a
+href="slide0122_image016.png"></a><a href="slide0122_image017.png"></a><a
+href="slide0122_image018.png"></a><a href="slide0122_image019.png"></a><a
+href="slide0122_image020.png"></a><a href="slide0122_image021.png"></a><a
+href=slide0013.html></a><a href="slide0013_image022.png"></a><a
+href="slide0013_image023.png"></a><a href="slide0013_image024.png"></a><a
+href="slide0013_image025.png"></a><a href="slide0013_image026.png"></a><a
+href="slide0013_image027.png"></a><a href=slide0132.html></a><a
+href="slide0132_image028.png"></a><a href="slide0132_image029.png"></a><a
+href="slide0132_image030.png"></a><a href="slide0132_image031.jpg"></a><a
+href="slide0132_image032.png"></a><a href="slide0132_image033.png"></a><a
+href="slide0132_image034.png"></a><a href=slide0137.html></a><a
+href="slide0137_image035.png"></a><a href="slide0137_image036.png"></a><a
+href="slide0137_image037.png"></a><a href="slide0137_image038.png"></a><a
+href="slide0137_image039.png"></a><a href="slide0137_image040.png"></a><a
+href="slide0137_image041.png"></a><a href="slide0137_image042.png"></a><a
+href="slide0137_image043.png"></a><a href="slide0137_image044.png"></a><a
+href="slide0137_image045.png"></a><a href="slide0137_image046.png"></a><a
+href="slide0137_image047.png"></a><a href="slide0137_image048.png"></a><a
+href="slide0137_image049.png"></a><a href="slide0137_image050.png"></a><a
+href="slide0137_image051.png"></a><a href="slide0137_image052.jpg"></a><a
+href="slide0137_image053.png"></a><a href="slide0137_image054.png"></a><a
+href=slide0138.html></a><a href="slide0138_image055.png"></a><a
+href=slide0139.html></a><a href="slide0139_image056.png"></a><a
+href="slide0139_image057.png"></a><a href="slide0139_image058.png"></a><a
+href="slide0139_image059.png"></a><a href="slide0139_image060.png"></a><a
+href="slide0139_image061.png"></a><a href="slide0139_image062.png"></a><a
+href="slide0139_image063.png"></a><a href="slide0139_image064.png"></a><a
+href="slide0139_image065.png"></a><a href="slide0139_image066.png"></a><a
+href="slide0139_image067.png"></a><a href="slide0139_image068.jpg"></a><a
+href="slide0139_image069.png"></a><a href="slide0139_image070.png"></a><a
+href="slide0139_image071.png"></a><a href=slide0133.html></a><a
+href="slide0133_image072.png"></a><a href="slide0133_image073.png"></a><a
+href="slide0133_image074.jpg"></a><a href="slide0133_image075.png"></a><a
+href="slide0133_image076.png"></a><a href="slide0133_image077.png"></a><a
+href="slide0133_image078.png"></a><a href=slide0134.html></a><a
+href="slide0134_image079.png"></a><a href="slide0134_image080.png"></a><a
+href="slide0134_image081.png"></a><a href=slide0135.html></a><a
+href="slide0135_image082.png"></a><a href="slide0135_image083.png"></a><a
+href="slide0135_image084.png"></a><a href=slide0136.html></a><a
+href="slide0136_image085.png"></a><a href="slide0136_image086.png"></a><a
+href="slide0136_image087.png"></a><a href=slide0006.html></a><a
+href="slide0006_image088.png"></a><a href="slide0006_image089.png"></a><a
+href="slide0006_image090.png"></a><a href="slide0006_image091.png"></a><a
+href="slide0006_image092.png"></a><a href="slide0006_image093.png"></a><a
+href="slide0006_image094.png"></a><a href="slide0006_image095.jpg"></a><a
+href="slide0006_image096.png"></a><a href="slide0006_image097.jpg"></a><a
+href="slide0006_image098.png"></a><a href="slide0006_image099.png"></a><a
+href="slide0006_image100.png"></a><a href="slide0006_image101.png"></a><a
+href="slide0006_image102.png"></a><a href="slide0006_image103.png"></a><a
+href="slide0006_image104.png"></a><a href="slide0006_image105.png"></a><a
+href="slide0006_image106.png"></a><a href="slide0006_image107.png"></a><a
+href="slide0006_image108.png"></a><a href="slide0006_image109.png"></a><a
+href="slide0006_image110.png"></a><a href="slide0006_image111.png"></a><a
+href="slide0006_image112.png"></a><a href="slide0006_image113.wmz"></a><a
+href="slide0006_image114.png"></a><a href="slide0006_image115.png"></a><a
+href="slide0006_image116.jpg"></a><a href="slide0006_image117.jpg"></a><a
+href="slide0006_image118.png"></a><a href=slide0020.html></a><a
+href="slide0020_image119.png"></a><a href="slide0020_image120.png"></a><a
+href="slide0020_image121.png"></a><a href="slide0020_image122.png"></a><a
+href="slide0020_image123.png"></a><a href="slide0020_image124.png"></a><a
+href="slide0020_image125.png"></a><a href="slide0020_image126.png"></a><a
+href="slide0020_image127.png"></a><a href="slide0020_image128.png"></a><a
+href="slide0020_image129.png"></a><a href="slide0020_image130.png"></a><a
+href="slide0020_image131.png"></a><a href="slide0020_image132.png"></a><a
+href="slide0020_image133.png"></a><a href="slide0020_image134.png"></a><a
+href=slide0022.html></a><a href="slide0022_image135.png"></a><a
+href=slide0025.html></a><a href="slide0025_image136.png"></a><a
+href="slide0025_image137.png"></a><a href="slide0025_image138.png"></a><a
+href="slide0025_image139.png"></a><a href="slide0025_image140.png"></a><a
+href="slide0025_image141.png"></a><a href="slide0025_image142.png"></a><a
+href="slide0025_image143.png"></a><a href="slide0025_image144.png"></a><a
+href="slide0025_image145.png"></a><a href="slide0025_image146.png"></a><a
+href="slide0025_image147.png"></a><a href="slide0025_image148.png"></a><a
+href="slide0025_image149.png"></a><a href=slide0174.html></a><a
+href="slide0174_image150.png"></a><a href="slide0174_image151.png"></a><a
+href="slide0174_image152.png"></a><a href="slide0174_image153.png"></a><a
+href="slide0174_image154.png"></a><a href="slide0174_image155.png"></a><a
+href="slide0174_image156.jpg"></a><a href="slide0174_image157.png"></a><a
+href="slide0174_image158.png"></a><a href="slide0174_image159.png"></a><a
+href="slide0174_image160.png"></a><a href="slide0174_image161.png"></a><a
+href="slide0174_image162.png"></a><a href="slide0174_image163.png"></a><a
+href="slide0174_image164.png"></a><a href="slide0174_image165.png"></a><a
+href="slide0174_image166.png"></a><a href="slide0174_image167.png"></a><a
+href="slide0174_image168.png"></a><a href="slide0174_image169.png"></a><a
+href="slide0174_image170.png"></a><a href="slide0174_image171.png"></a><a
+href="slide0174_image172.png"></a><a href="slide0174_image173.png"></a><a
+href="slide0174_image174.png"></a><a href="slide0174_image175.png"></a><a
+href="slide0174_image176.png"></a><a href=slide0173.html></a><a
+href="slide0173_image177.png"></a><a href="slide0173_image178.png"></a><a
+href="slide0173_image179.png"></a><a href="slide0173_image180.png"></a><a
+href="slide0173_image181.png"></a><a href="slide0173_image182.png"></a><a
+href="slide0173_image183.png"></a><a href="slide0173_image184.png"></a><a
+href="slide0173_image185.png"></a><a href="slide0173_image186.png"></a><a
+href="slide0173_image187.png"></a><a href="slide0173_image188.png"></a><a
+href="slide0173_image189.png"></a><a href="slide0173_image190.png"></a><a
+href="slide0173_image191.jpg"></a><a href="slide0173_image192.png"></a><a
+href="slide0173_image193.png"></a><a href="slide0173_image194.png"></a><a
+href="slide0173_image195.png"></a><a href="slide0173_image196.png"></a><a
+href="slide0173_image197.png"></a><a href="slide0173_image198.png"></a><a
+href="slide0173_image199.png"></a><a href="slide0173_image200.png"></a><a
+href=slide0151.html></a><a href=slide0151.xml></a><a
+href="slide0151_image201.png"></a><a href="slide0151_image202.png"></a><a
+href="slide0151_image203.png"></a><a href="slide0151_image204.png"></a><a
+href="slide0151_image205.png"></a><a href="slide0151_image206.png"></a><a
+href="slide0151_image207.png"></a><a href="slide0151_image208.png"></a><a
+href="slide0151_image209.png"></a><a href="slide0151_image210.png"></a><a
+href="slide0151_image211.png"></a><a href="slide0151_image212.png"></a><a
+href="slide0151_image213.png"></a><a href="slide0151_image214.png"></a><a
+href="slide0151_image215.png"></a><a href="slide0151_image216.png"></a><a
+href="slide0151_image217.png"></a><a href="slide0151_image218.png"></a><a
+href="slide0151_image219.png"></a><a href="slide0151_image220.png"></a><a
+href="slide0151_image221.png"></a><a href="slide0151_image222.png"></a><a
+href="slide0151_image223.png"></a><a href="slide0151_image224.png"></a><a
+href="slide0151_image225.png"></a><a href="slide0151_image226.png"></a><a
+href="slide0151_image227.png"></a><a href="slide0151_image228.png"></a><a
+href="slide0151_image229.png"></a><a href="slide0151_image230.png"></a><a
+href="slide0151_image231.png"></a><a href=slide0152.html></a><a
+href="slide0152_image232.png"></a><a href="slide0152_image233.png"></a><a
+href="slide0152_image234.png"></a><a href="slide0152_image235.png"></a><a
+href="slide0152_image236.png"></a><a href="slide0152_image237.png"></a><a
+href="slide0152_image238.png"></a><a href="slide0152_image239.png"></a><a
+href="slide0152_image240.png"></a><a href="slide0152_image241.png"></a><a
+href="slide0152_image242.png"></a><a href="slide0152_image243.png"></a><a
+href="slide0152_image244.png"></a><a href="slide0152_image245.png"></a><a
+href="slide0152_image246.png"></a><a href="slide0152_image247.png"></a><a
+href="slide0152_image248.png"></a><a href="slide0152_image249.png"></a><a
+href="slide0152_image250.png"></a><a href="slide0152_image251.png"></a><a
+href="slide0152_image252.png"></a><a href="slide0152_image253.png"></a><a
+href="slide0152_image254.png"></a><a href="slide0152_image255.png"></a><a
+href="slide0152_image256.png"></a><a href=slide0155.html></a><a
+href=slide0155.xml></a><a href="slide0155_image257.png"></a><a
+href="slide0155_image258.png"></a><a href="slide0155_image259.png"></a><a
+href="slide0155_image260.png"></a><a href="slide0155_image261.png"></a><a
+href="slide0155_image262.png"></a><a href="slide0155_image263.png"></a><a
+href="slide0155_image264.png"></a><a href="slide0155_image265.png"></a><a
+href="slide0155_image266.png"></a><a href="slide0155_image267.png"></a><a
+href="slide0155_image268.png"></a><a href="slide0155_image269.png"></a><a
+href="slide0155_image270.png"></a><a href="slide0155_image271.png"></a><a
+href="slide0155_image272.png"></a><a href="slide0155_image273.png"></a><a
+href="slide0155_image274.png"></a><a href="slide0155_image275.png"></a><a
+href="slide0155_image276.png"></a><a href="slide0155_image277.png"></a><a
+href="slide0155_image278.png"></a><a href="slide0155_image279.png"></a><a
+href="slide0155_image280.png"></a><a href="slide0155_image281.png"></a><a
+href="slide0155_image282.png"></a><a href="slide0155_image283.png"></a><a
+href="slide0155_image284.png"></a><a href="slide0155_image285.png"></a><a
+href="slide0155_image286.png"></a><a href=slide0175.html></a><a
+href="slide0175_image287.png"></a><a href="slide0175_image288.png"></a><a
+href="slide0175_image289.png"></a><a href="slide0175_image290.png"></a><a
+href="slide0175_image291.png"></a><a href="slide0175_image292.png"></a><a
+href="slide0175_image293.png"></a><a href="slide0175_image294.png"></a><a
+href="slide0175_image295.png"></a><a href="slide0175_image296.png"></a><a
+href="slide0175_image297.png"></a><a href="slide0175_image298.png"></a><a
+href="slide0175_image299.png"></a><a href="slide0175_image300.png"></a><a
+href="slide0175_image301.png"></a><a href="slide0175_image302.png"></a><a
+href="slide0175_image303.png"></a><a href="slide0175_image304.png"></a><a
+href="slide0175_image305.png"></a><a href="slide0175_image306.png"></a><a
+href="slide0175_image307.png"></a><a href="slide0175_image308.png"></a><a
+href="slide0175_image309.png"></a><a href=slide0153.html></a><a
+href="slide0153_image310.png"></a><a href="slide0153_image311.png"></a><a
+href="slide0153_image312.png"></a><a href="slide0153_image313.png"></a><a
+href="slide0153_image314.png"></a><a href="slide0153_image315.png"></a><a
+href="slide0153_image316.png"></a><a href="slide0153_image317.png"></a><a
+href="slide0153_image318.png"></a><a href="slide0153_image319.png"></a><a
+href="slide0153_image320.png"></a><a href="slide0153_image321.png"></a><a
+href="slide0153_image322.png"></a><a href="slide0153_image323.png"></a><a
+href="slide0153_image324.png"></a><a href="slide0153_image325.png"></a><a
+href="slide0153_image326.png"></a><a href=slide0154.html></a><a
+href="slide0154_image327.png"></a><a href="slide0154_image328.png"></a><a
+href="slide0154_image329.png"></a><a href="slide0154_image330.png"></a><a
+href="slide0154_image331.png"></a><a href="slide0154_image332.png"></a><a
+href="slide0154_image333.png"></a><a href="slide0154_image334.png"></a><a
+href="slide0154_image335.png"></a><a href="slide0154_image336.png"></a><a
+href="slide0154_image337.png"></a><a href="slide0154_image338.png"></a><a
+href="slide0154_image339.png"></a><a href="slide0154_image340.png"></a><a
+href="slide0154_image341.png"></a><a href="slide0154_image342.png"></a><a
+href="slide0154_image343.png"></a><a href="slide0154_image344.png"></a><a
+href="slide0154_image345.png"></a><a href="slide0154_image346.png"></a><a
+href="slide0154_image347.png"></a><a href="slide0154_image348.png"></a><a
+href=slide0156.html></a><a href="slide0156_image349.png"></a><a
+href="slide0156_image350.png"></a><a href="slide0156_image351.png"></a><a
+href="slide0156_image352.png"></a><a href="slide0156_image353.png"></a><a
+href="slide0156_image354.png"></a><a href="slide0156_image355.png"></a><a
+href="slide0156_image356.png"></a><a href="slide0156_image357.png"></a><a
+href="slide0156_image358.png"></a><a href="slide0156_image359.png"></a><a
+href="slide0156_image360.png"></a><a href="slide0156_image361.png"></a><a
+href="slide0156_image362.png"></a><a href="slide0156_image363.png"></a><a
+href="slide0156_image364.png"></a><a href="slide0156_image365.png"></a><a
+href=slide0144.html></a><a href="slide0144_image366.png"></a><a
+href="slide0144_image367.png"></a><a href="slide0144_image368.png"></a><a
+href="slide0144_image369.png"></a><a href="slide0144_image370.png"></a><a
+href="slide0144_image371.png"></a><a href="slide0144_image372.png"></a><a
+href="slide0144_image373.png"></a><a href="slide0144_image374.png"></a><a
+href="slide0144_image375.png"></a><a href="slide0144_image376.png"></a><a
+href="slide0144_image377.png"></a><a href=slide0145.html></a><a
+href="slide0145_image378.png"></a><a href="slide0145_image379.png"></a><a
+href="slide0145_image380.png"></a><a href=slide0146.html></a><a
+href="slide0146_image381.png"></a><a href="slide0146_image382.png"></a><a
+href="slide0146_image383.png"></a><a href="slide0146_image384.png"></a><a
+href="slide0146_image385.png"></a><a href="slide0146_image386.png"></a><a
+href=slide0147.html></a><a href="slide0147_image387.png"></a><a
+href="slide0147_image388.png"></a><a href="slide0147_image389.png"></a><a
+href=slide0158.html></a><a href="slide0158_image390.png"></a><a
+href="slide0158_image391.png"></a><a href="slide0158_image392.png"></a><a
+href="slide0158_image393.png"></a><a href="slide0158_image394.png"></a><a
+href="slide0158_image395.png"></a><a href="slide0158_image396.png"></a><a
+href="slide0158_image397.png"></a><a href=slide0157.html></a><a
+href="slide0157_image398.png"></a><a href="slide0157_image399.png"></a><a
+href="slide0157_image400.png"></a><a href=slide0159.html></a><a
+href=slide0159.xml></a><a href="slide0159_image401.png"></a><a
+href="slide0159_image402.png"></a><a href="slide0159_image403.png"></a><a
+href="slide0159_image404.png"></a><a href="slide0159_image405.png"></a><a
+href="slide0159_image406.png"></a><a href="slide0159_image407.png"></a><a
+href="slide0159_image408.png"></a><a href="slide0159_image409.png"></a><a
+href="slide0159_image410.png"></a><a href="slide0159_image411.png"></a><a
+href="slide0159_image412.png"></a><a href="slide0159_image413.png"></a><a
+href="slide0159_image414.png"></a><a href=slide0166.html></a><a
+href=slide0166.xml></a><a href="slide0166_image415.png"></a><a
+href="slide0166_image416.png"></a><a href="slide0166_image417.png"></a><a
+href="slide0166_image418.png"></a><a href="slide0166_image419.png"></a><a
+href="slide0166_image420.png"></a><a href="slide0166_image421.png"></a><a
+href="slide0166_image422.png"></a><a href="slide0166_image423.png"></a><a
+href="slide0166_image424.png"></a><a href="slide0166_image425.png"></a><a
+href="slide0166_image426.png"></a><a href="slide0166_image427.png"></a><a
+href="slide0166_image428.png"></a><a href="slide0166_image429.png"></a><a
+href="slide0166_image430.png"></a><a href="slide0166_image431.png"></a><a
+href="slide0166_image432.png"></a><a href="slide0166_image433.png"></a><a
+href="slide0166_image434.png"></a><a href="slide0166_image435.png"></a><a
+href="slide0166_image436.png"></a><a href="slide0166_image437.png"></a><a
+href="slide0166_image438.png"></a><a href="slide0166_image439.png"></a><a
+href=slide0167.html></a><a href="slide0167_image440.png"></a><a
+href="slide0167_image441.png"></a><a href="slide0167_image442.png"></a><a
+href="slide0167_image443.png"></a><a href="slide0167_image444.png"></a><a
+href="slide0167_image445.png"></a><a href="slide0167_image446.png"></a><a
+href="slide0167_image447.png"></a><a href="slide0167_image448.png"></a><a
+href="slide0167_image449.png"></a><a href="slide0167_image450.png"></a><a
+href="slide0167_image451.png"></a><a href="slide0167_image452.png"></a><a
+href="slide0167_image453.png"></a><a href=slide0240.html></a><a
+href="slide0240_image454.png"></a><a href="slide0240_image455.png"></a><a
+href="slide0240_image456.png"></a><a href="slide0240_image457.png"></a><a
+href="slide0240_image458.png"></a><a href="slide0240_image459.png"></a><a
+href="slide0240_image460.png"></a><a href="slide0240_image461.png"></a><a
+href="slide0240_image462.png"></a><a href="slide0240_image463.png"></a><a
+href="slide0240_image464.png"></a><a href="slide0240_image465.png"></a><a
+href="slide0240_image466.png"></a><a href="slide0240_image467.png"></a><a
+href=slide0168.html></a><a href="slide0168_image468.png"></a><a
+href="slide0168_image469.png"></a><a href="slide0168_image470.png"></a><a
+href="slide0168_image471.png"></a><a href="slide0168_image472.png"></a><a
+href="slide0168_image473.png"></a><a href="slide0168_image474.png"></a><a
+href="slide0168_image475.png"></a><a href="slide0168_image476.png"></a><a
+href=slide0169.html></a><a href=slide0169.xml></a><a
+href="slide0169_image477.png"></a><a href="slide0169_image478.png"></a><a
+href="slide0169_image479.png"></a><a href="slide0169_image480.png"></a><a
+href="slide0169_image481.png"></a><a href="slide0169_image482.png"></a><a
+href="slide0169_image483.png"></a><a href="slide0169_image484.png"></a><a
+href="slide0169_image485.png"></a><a href="slide0169_image486.png"></a><a
+href="slide0169_image487.png"></a><a href="slide0169_image488.png"></a><a
+href="slide0169_image489.png"></a><a href="slide0169_image490.png"></a><a
+href="slide0169_image491.jpg"></a><a href="slide0169_image492.png"></a><a
+href="slide0169_image493.png"></a><a href="slide0169_image494.jpg"></a><a
+href="slide0169_image495.png"></a><a href="slide0169_image496.png"></a><a
+href=slide0170.html></a><a href="slide0170_image497.png"></a><a
+href="slide0170_image498.png"></a><a href="slide0170_image499.png"></a><a
+href="slide0170_image500.png"></a><a href="slide0170_image501.png"></a><a
+href="slide0170_image502.png"></a><a href=slide0171.html></a><a
+href="slide0171_image503.png"></a><a href="slide0171_image504.png"></a><a
+href="slide0171_image505.png"></a><a href="slide0171_image506.png"></a><a
+href="slide0171_image507.png"></a><a href="slide0171_image508.png"></a><a
+href=slide0172.html></a><a href="slide0172_image509.png"></a><a
+href="slide0172_image510.png"></a><a href="slide0172_image511.png"></a><a
+href="slide0172_image512.png"></a><a href=slide0241.html></a><a
+href="slide0241_image513.png"></a><a href="slide0241_image514.png"></a><a
+href="slide0241_image515.png"></a><a href=slide0148.html></a><a
+href=slide0178.html></a><a href=slide0178.xml></a><a
+href="slide0178_image516.png"></a><a href="slide0178_image517.png"></a><a
+href="slide0178_image518.png"></a><a href="slide0178_image519.png"></a><a
+href="slide0178_image520.png"></a><a href="slide0178_image521.png"></a><a
+href="slide0178_image522.png"></a><a href="slide0178_image523.png"></a><a
+href="slide0178_image524.png"></a><a href="slide0178_image525.png"></a><a
+href="slide0178_image526.png"></a><a href="slide0178_image527.png"></a><a
+href="slide0178_image528.png"></a><a href="slide0178_image529.png"></a><a
+href="slide0178_image530.png"></a><a href="slide0178_image531.png"></a><a
+href="slide0178_image532.png"></a><a href="slide0178_image533.png"></a><a
+href="slide0178_image534.png"></a><a href="slide0178_image535.png"></a><a
+href="slide0178_image536.png"></a><a href="slide0178_image537.png"></a><a
+href="slide0178_image538.png"></a><a href="slide0178_image539.png"></a><a
+href="slide0178_image540.png"></a><a href="slide0178_image541.png"></a><a
+href=slide0179.html></a><a href="slide0179_image542.png"></a><a
+href="slide0179_image543.png"></a><a href="slide0179_image544.png"></a><a
+href="slide0179_image545.png"></a><a href="slide0179_image546.png"></a><a
+href="slide0179_image547.png"></a><a href="slide0179_image548.png"></a><a
+href="slide0179_image549.png"></a><a href="slide0179_image550.png"></a><a
+href="slide0179_image551.png"></a><a href="slide0179_image552.png"></a><a
+href="slide0179_image553.png"></a><a href="slide0179_image554.png"></a><a
+href="slide0179_image555.png"></a><a href="slide0179_image556.png"></a><a
+href="slide0179_image557.png"></a><a href="slide0179_image558.png"></a><a
+href="slide0179_image559.png"></a><a href="slide0179_image560.png"></a><a
+href="slide0179_image561.png"></a><a href="slide0179_image562.png"></a><a
+href=slide0180.html></a><a href="slide0180_image563.png"></a><a
+href="slide0180_image564.png"></a><a href="slide0180_image565.png"></a><a
+href="slide0180_image566.png"></a><a href="slide0180_image567.png"></a><a
+href=slide0181.html></a><a href="slide0181_image568.png"></a><a
+href="slide0181_image569.png"></a><a href="slide0181_image570.png"></a><a
+href=slide0186.html></a><a href="slide0186_image571.png"></a><a
+href="slide0186_image572.png"></a><a href="slide0186_image573.png"></a><a
+href=slide0188.html></a><a href=slide0188.xml></a><a
+href="slide0188_image574.png"></a><a href="slide0188_image575.png"></a><a
+href="slide0188_image576.png"></a><a href="slide0188_image577.png"></a><a
+href="slide0188_image578.png"></a><a href="slide0188_image579.png"></a><a
+href="slide0188_image580.png"></a><a href="slide0188_image581.png"></a><a
+href="slide0188_image582.png"></a><a href="slide0188_image583.png"></a><a
+href="slide0188_image584.png"></a><a href="slide0188_image585.png"></a><a
+href="slide0188_image586.png"></a><a href="slide0188_image587.png"></a><a
+href="slide0188_image588.png"></a><a href="slide0188_image589.png"></a><a
+href="slide0188_image590.png"></a><a href="slide0188_image591.png"></a><a
+href="slide0188_image592.png"></a><a href="slide0188_image593.png"></a><a
+href="slide0188_image594.png"></a><a href="slide0188_image595.png"></a><a
+href="slide0188_image596.png"></a><a href="slide0188_image597.png"></a><a
+href="slide0188_image598.png"></a><a href="slide0188_image599.png"></a><a
+href="slide0188_image600.png"></a><a href="slide0188_image601.png"></a><a
+href=slide0184.html></a><a href="slide0184_image602.png"></a><a
+href="slide0184_image603.png"></a><a href="slide0184_image604.png"></a><a
+href="slide0184_image605.png"></a><a href="slide0184_image606.png"></a><a
+href="slide0184_image607.png"></a><a href=slide0185.html></a><a
+href="slide0185_image608.png"></a><a href="slide0185_image609.png"></a><a
+href="slide0185_image610.png"></a><a href="slide0185_image611.png"></a><a
+href=slide0189.html></a><a href=slide0190.html></a><a href=slide0190.xml></a><a
+href="slide0190_image612.png"></a><a href="slide0190_image613.png"></a><a
+href="slide0190_image614.png"></a><a href="slide0190_image615.png"></a><a
+href="slide0190_image616.png"></a><a href="slide0190_image617.png"></a><a
+href="slide0190_image618.png"></a><a href="slide0190_image619.png"></a><a
+href="slide0190_image620.png"></a><a href="slide0190_image621.png"></a><a
+href="slide0190_image622.png"></a><a href="slide0190_image623.png"></a><a
+href="slide0190_image624.png"></a><a href="slide0190_image625.png"></a><a
+href="slide0190_image626.png"></a><a href="slide0190_image627.png"></a><a
+href="slide0190_image628.png"></a><a href="slide0190_image629.png"></a><a
+href="slide0190_image630.png"></a><a href="slide0190_image631.png"></a><a
+href="slide0190_image632.png"></a><a href="slide0190_image633.png"></a><a
+href="slide0190_image634.png"></a><a href="slide0190_image635.png"></a><a
+href="slide0190_image636.png"></a><a href="slide0190_image637.png"></a><a
+href="slide0190_image638.png"></a><a href=slide0227.html></a><a
+href=slide0227.xml></a><a href="slide0227_image639.png"></a><a
+href="slide0227_image640.png"></a><a href="slide0227_image641.png"></a><a
+href="slide0227_image642.png"></a><a href="slide0227_image643.png"></a><a
+href="slide0227_image644.png"></a><a href="slide0227_image645.png"></a><a
+href="slide0227_image646.png"></a><a href="slide0227_image647.png"></a><a
+href="slide0227_image648.png"></a><a href="slide0227_image649.png"></a><a
+href="slide0227_image650.png"></a><a href="slide0227_image651.png"></a><a
+href="slide0227_image652.png"></a><a href="slide0227_image653.png"></a><a
+href="slide0227_image654.png"></a><a href="slide0227_image655.png"></a><a
+href="slide0227_image656.png"></a><a href="slide0227_image657.png"></a><a
+href="slide0227_image658.png"></a><a href="slide0227_image659.png"></a><a
+href="slide0227_image660.png"></a><a href="slide0227_image661.png"></a><a
+href="slide0227_image662.png"></a><a href="slide0227_image663.png"></a><a
+href="slide0227_image664.png"></a><a href="slide0227_image665.png"></a><a
+href=slide0192.html></a><a href="slide0192_image666.png"></a><a
+href="slide0192_image667.png"></a><a href="slide0192_image668.png"></a><a
+href="slide0192_image669.png"></a><a href="slide0192_image670.png"></a><a
+href=slide0193.html></a><a href="slide0193_image671.png"></a><a
+href="slide0193_image672.png"></a><a href="slide0193_image673.png"></a><a
+href=slide0194.html></a><a href="slide0194_image674.png"></a><a
+href="slide0194_image675.png"></a><a href="slide0194_image676.png"></a><a
+href=slide0196.html></a><a href="slide0196_image677.png"></a><a
+href="slide0196_image678.png"></a><a href="slide0196_image679.png"></a><a
+href="slide0196_image680.png"></a><a href="slide0196_image681.png"></a><a
+href="slide0196_image682.png"></a><a href=slide0197.html></a><a
+href="slide0197_image683.png"></a><a href="slide0197_image684.png"></a><a
+href="slide0197_image685.png"></a><a href="slide0197_image686.png"></a><a
+href=slide0177.html></a><a href=slide0198.html></a><a
+href="slide0198_image687.png"></a><a href="slide0198_image688.png"></a><a
+href="slide0198_image689.png"></a><a href="slide0198_image690.png"></a><a
+href="slide0198_image691.png"></a><a href="slide0198_image692.png"></a><a
+href="slide0198_image693.png"></a><a href="slide0198_image694.png"></a><a
+href="slide0198_image695.png"></a><a href="slide0198_image696.png"></a><a
+href="slide0198_image697.png"></a><a href="slide0198_image698.png"></a><a
+href="slide0198_image699.png"></a><a href="slide0198_image700.png"></a><a
+href="slide0198_image701.png"></a><a href="slide0198_image702.png"></a><a
+href="slide0198_image703.png"></a><a href="slide0198_image704.png"></a><a
+href="slide0198_image705.png"></a><a href="slide0198_image706.png"></a><a
+href="slide0198_image707.png"></a><a href="slide0198_image708.png"></a><a
+href="slide0198_image709.png"></a><a href="slide0198_image710.png"></a><a
+href=slide0200.html></a><a href="slide0200_image711.png"></a><a
+href="slide0200_image712.png"></a><a href="slide0200_image713.png"></a><a
+href="slide0200_image714.png"></a><a href="slide0200_image715.png"></a><a
+href="slide0200_image716.png"></a><a href="slide0200_image717.png"></a><a
+href="slide0200_image718.png"></a><a href="slide0200_image719.png"></a><a
+href="slide0200_image720.png"></a><a href="slide0200_image721.png"></a><a
+href="slide0200_image722.png"></a><a href="slide0200_image723.png"></a><a
+href="slide0200_image724.png"></a><a href="slide0200_image725.png"></a><a
+href="slide0200_image726.png"></a><a href="slide0200_image727.png"></a><a
+href="slide0200_image728.png"></a><a href=slide0201.html></a><a
+href="slide0201_image729.png"></a><a href="slide0201_image730.png"></a><a
+href="slide0201_image731.png"></a><a href="slide0201_image732.png"></a><a
+href="slide0201_image733.png"></a><a href="slide0201_image734.png"></a><a
+href="slide0201_image735.png"></a><a href="slide0201_image736.png"></a><a
+href="slide0201_image737.png"></a><a href="slide0201_image738.png"></a><a
+href="slide0201_image739.png"></a><a href="slide0201_image740.png"></a><a
+href="slide0201_image741.png"></a><a href="slide0201_image742.png"></a><a
+href="slide0201_image743.png"></a><a href="slide0201_image744.png"></a><a
+href="slide0201_image745.png"></a><a href="slide0201_image746.png"></a><a
+href="slide0201_image747.png"></a><a href="slide0201_image748.png"></a><a
+href="slide0201_image749.png"></a><a href="slide0201_image750.png"></a><a
+href="slide0201_image751.png"></a><a href="slide0201_image752.png"></a><a
+href="slide0201_image753.png"></a><a href=slide0202.html></a><a
+href="slide0202_image754.png"></a><a href="slide0202_image755.png"></a><a
+href="slide0202_image756.png"></a><a href="slide0202_image757.png"></a><a
+href="slide0202_image758.png"></a><a href=slide0203.html></a><a
+href="slide0203_image759.png"></a><a href="slide0203_image760.png"></a><a
+href="slide0203_image761.png"></a><a href=slide0213.html></a><a
+href="slide0213_image762.png"></a><a href="slide0213_image763.png"></a><a
+href="slide0213_image764.png"></a><a href="slide0213_image765.png"></a><a
+href="slide0213_image766.png"></a><a href="slide0213_image767.png"></a><a
+href="slide0213_image768.png"></a><a href=slide0204.html></a><a
+href="slide0204_image769.png"></a><a href="slide0204_image770.png"></a><a
+href="slide0204_image771.png"></a><a href=slide0205.html></a><a
+href=slide0205.xml></a><a href="slide0205_image772.png"></a><a
+href="slide0205_image773.png"></a><a href="slide0205_image774.png"></a><a
+href="slide0205_image775.png"></a><a href="slide0205_image776.png"></a><a
+href="slide0205_image777.png"></a><a href="slide0205_image778.png"></a><a
+href="slide0205_image779.png"></a><a href="slide0205_image780.png"></a><a
+href="slide0205_image781.png"></a><a href="slide0205_image782.png"></a><a
+href="slide0205_image783.png"></a><a href="slide0205_image784.png"></a><a
+href="slide0205_image785.png"></a><a href="slide0205_image786.png"></a><a
+href=slide0214.html></a><a href=slide0214.xml></a><a
+href="slide0214_image787.png"></a><a href="slide0214_image788.png"></a><a
+href="slide0214_image789.png"></a><a href="slide0214_image790.png"></a><a
+href="slide0214_image791.png"></a><a href="slide0214_image792.png"></a><a
+href="slide0214_image793.png"></a><a href="slide0214_image794.png"></a><a
+href="slide0214_image795.png"></a><a href="slide0214_image796.png"></a><a
+href="slide0214_image797.png"></a><a href="slide0214_image798.png"></a><a
+href="slide0214_image799.png"></a><a href="slide0214_image800.png"></a><a
+href="slide0214_image801.png"></a><a href="slide0214_image802.png"></a><a
+href="slide0214_image803.png"></a><a href="slide0214_image804.png"></a><a
+href="slide0214_image805.png"></a><a href="slide0214_image806.png"></a><a
+href="slide0214_image807.png"></a><a href="slide0214_image808.png"></a><a
+href="slide0214_image809.png"></a><a href="slide0214_image810.png"></a><a
+href="slide0214_image811.png"></a><a href="slide0214_image812.png"></a><a
+href="slide0214_image813.png"></a><a href="slide0214_image814.png"></a><a
+href="slide0214_image815.png"></a><a href="slide0214_image816.png"></a><a
+href="slide0214_image817.png"></a><a href="slide0214_image818.png"></a><a
+href="slide0214_image819.png"></a><a href="slide0214_image820.png"></a><a
+href=slide0208.html></a><a href="slide0208_image821.png"></a><a
+href="slide0208_image822.png"></a><a href="slide0208_image823.png"></a><a
+href="slide0208_image824.png"></a><a href="slide0208_image825.png"></a><a
+href="slide0208_image826.png"></a><a href="slide0208_image827.png"></a><a
+href="slide0208_image828.png"></a><a href="slide0208_image829.png"></a><a
+href=slide0209.html></a><a href=slide0209.xml></a><a
+href="slide0209_image830.png"></a><a href="slide0209_image831.png"></a><a
+href="slide0209_image832.png"></a><a href="slide0209_image833.png"></a><a
+href="slide0209_image834.png"></a><a href="slide0209_image835.png"></a><a
+href="slide0209_image836.png"></a><a href="slide0209_image837.png"></a><a
+href="slide0209_image838.png"></a><a href="slide0209_image839.png"></a><a
+href="slide0209_image840.png"></a><a href="slide0209_image841.png"></a><a
+href="slide0209_image842.png"></a><a href="slide0209_image843.png"></a><a
+href="slide0209_image844.png"></a><a href="slide0209_image845.png"></a><a
+href="slide0209_image846.png"></a><a href="slide0209_image847.png"></a><a
+href=slide0210.html></a><a href="slide0210_image848.png"></a><a
+href="slide0210_image849.png"></a><a href="slide0210_image850.png"></a><a
+href="slide0210_image851.png"></a><a href="slide0210_image852.png"></a><a
+href="slide0210_image853.png"></a><a href=slide0211.html></a><a
+href="slide0211_image854.png"></a><a href="slide0211_image855.png"></a><a
+href="slide0211_image856.png"></a><a href="slide0211_image857.png"></a><a
+href="slide0211_image858.png"></a><a href="slide0211_image859.png"></a><a
+href="slide0211_image860.png"></a><a href=slide0212.html></a><a
+href="slide0212_image861.png"></a><a href="slide0212_image862.png"></a><a
+href="slide0212_image863.png"></a><a href="slide0212_image864.png"></a><a
+href=slide0239.html></a><a href="slide0239_image865.png"></a><a
+href="slide0239_image866.png"></a><a href="slide0239_image867.png"></a><a
+href=slide0215.html></a><a href=slide0224.html></a><a
+href="slide0224_image868.png"></a><a href="slide0224_image869.png"></a><a
+href="slide0224_image870.png"></a><a href="slide0224_image871.png"></a><a
+href="slide0224_image872.png"></a><a href="slide0224_image873.png"></a><a
+href="slide0224_image874.png"></a><a href="slide0224_image875.png"></a><a
+href="slide0224_image876.png"></a><a href="slide0224_image877.png"></a><a
+href="slide0224_image878.png"></a><a href="slide0224_image879.png"></a><a
+href="slide0224_image880.png"></a><a href="slide0224_image881.png"></a><a
+href="slide0224_image882.png"></a><a href="slide0224_image883.png"></a><a
+href="slide0224_image884.png"></a><a href="slide0224_image885.png"></a><a
+href="slide0224_image886.png"></a><a href="slide0224_image887.png"></a><a
+href="slide0224_image888.png"></a><a href="slide0224_image889.png"></a><a
+href="slide0224_image890.png"></a><a href="slide0224_image891.png"></a><a
+href="slide0224_image892.png"></a><a href="slide0224_image893.png"></a><a
+href="slide0224_image894.png"></a><a href=slide0216.html></a><a
+href="slide0216_image895.png"></a><a href="slide0216_image896.png"></a><a
+href="slide0216_image897.png"></a><a href="slide0216_image898.png"></a><a
+href="slide0216_image899.png"></a><a href="slide0216_image900.png"></a><a
+href="slide0216_image901.png"></a><a href="slide0216_image902.png"></a><a
+href="slide0216_image903.png"></a><a href="slide0216_image904.png"></a><a
+href="slide0216_image905.png"></a><a href="slide0216_image906.png"></a><a
+href="slide0216_image907.png"></a><a href="slide0216_image908.png"></a><a
+href="slide0216_image909.png"></a><a href="slide0216_image910.png"></a><a
+href="slide0216_image911.png"></a><a href="slide0216_image912.png"></a><a
+href="slide0216_image913.png"></a><a href=slide0217.html></a><a
+href="slide0217_image914.png"></a><a href="slide0217_image915.png"></a><a
+href="slide0217_image916.png"></a><a href="slide0217_image917.png"></a><a
+href="slide0217_image918.png"></a><a href=slide0218.html></a><a
+href="slide0218_image919.png"></a><a href="slide0218_image920.png"></a><a
+href="slide0218_image921.png"></a><a href=slide0220.html></a><a
+href="slide0220_image922.png"></a><a href="slide0220_image923.png"></a><a
+href="slide0220_image924.png"></a><a href=slide0221.html></a><a
+href=slide0221.xml></a><a href="slide0221_image925.png"></a><a
+href="slide0221_image926.png"></a><a href="slide0221_image927.png"></a><a
+href="slide0221_image928.png"></a><a href="slide0221_image929.png"></a><a
+href="slide0221_image930.png"></a><a href="slide0221_image931.png"></a><a
+href="slide0221_image932.png"></a><a href="slide0221_image933.png"></a><a
+href="slide0221_image934.png"></a><a href="slide0221_image935.png"></a><a
+href="slide0221_image936.png"></a><a href="slide0221_image937.png"></a><a
+href="slide0221_image938.png"></a><a href="slide0221_image939.png"></a><a
+href="slide0221_image940.png"></a><a href="slide0221_image941.png"></a><a
+href="slide0221_image942.png"></a><a href="slide0221_image943.png"></a><a
+href="slide0221_image944.png"></a><a href="slide0221_image945.png"></a><a
+href="slide0221_image946.png"></a><a href="slide0221_image947.png"></a><a
+href="slide0221_image948.png"></a><a href="slide0221_image949.png"></a><a
+href="slide0221_image950.png"></a><a href="slide0221_image951.png"></a><a
+href="slide0221_image952.png"></a><a href="slide0221_image953.png"></a><a
+href="slide0221_image954.png"></a><a href="slide0221_image955.png"></a><a
+href="slide0221_image956.png"></a><a href="slide0221_image957.png"></a><a
+href="slide0221_image958.png"></a><a href=slide0222.html></a><a
+href="slide0222_image959.png"></a><a href="slide0222_image960.png"></a><a
+href="slide0222_image961.png"></a><a href="slide0222_image962.png"></a><a
+href="slide0222_image963.png"></a><a href="slide0222_image964.png"></a><a
+href="slide0222_image965.png"></a><a href=slide0223.html></a><a
+href="slide0223_image966.png"></a><a href="slide0223_image967.png"></a><a
+href="slide0223_image968.png"></a><a href="slide0223_image969.png"></a><a
+href=slide0225.html></a><a href=slide0228.html></a><a
+href="slide0228_image970.png"></a><a href="slide0228_image971.png"></a><a
+href="slide0228_image972.png"></a><a href="slide0228_image973.png"></a><a
+href="slide0228_image974.png"></a><a href="slide0228_image975.png"></a><a
+href="slide0228_image976.png"></a><a href="slide0228_image977.png"></a><a
+href="slide0228_image978.png"></a><a href="slide0228_image979.png"></a><a
+href="slide0228_image980.png"></a><a href="slide0228_image981.png"></a><a
+href="slide0228_image982.png"></a><a href="slide0228_image983.png"></a><a
+href="slide0228_image984.png"></a><a href="slide0228_image985.png"></a><a
+href="slide0228_image986.png"></a><a href="slide0228_image987.png"></a><a
+href="slide0228_image988.png"></a><a href="slide0228_image989.png"></a><a
+href="slide0228_image990.png"></a><a href="slide0228_image991.png"></a><a
+href="slide0228_image992.png"></a><a href="slide0228_image993.png"></a><a
+href="slide0228_image994.png"></a><a href="slide0228_image995.png"></a><a
+href="slide0228_image996.png"></a><a href="slide0228_image997.png"></a><a
+href=slide0226.html></a><a href=slide0226.xml></a><a
+href="slide0226_image998.png"></a><a href="slide0226_image999.png"></a><a
+href="slide0226_image1000.png"></a><a href="slide0226_image1001.png"></a><a
+href="slide0226_image1002.png"></a><a href="slide0226_image1003.png"></a><a
+href="slide0226_image1004.png"></a><a href="slide0226_image1005.png"></a><a
+href="slide0226_image1006.png"></a><a href="slide0226_image1007.png"></a><a
+href="slide0226_image1008.png"></a><a href="slide0226_image1009.png"></a><a
+href="slide0226_image1010.png"></a><a href="slide0226_image1011.png"></a><a
+href="slide0226_image1012.png"></a><a href="slide0226_image1013.png"></a><a
+href="slide0226_image1014.png"></a><a href="slide0226_image1015.png"></a><a
+href="slide0226_image1016.png"></a><a href="slide0226_image1017.png"></a><a
+href="slide0226_image1018.png"></a><a href="slide0226_image1019.png"></a><a
+href="slide0226_image1020.png"></a><a href="slide0226_image1021.png"></a><a
+href="slide0226_image1022.png"></a><a href="slide0226_image1023.png"></a><a
+href="slide0226_image1024.png"></a><a href=slide0229.html></a><a
+href="slide0229_image1025.png"></a><a href="slide0229_image1026.png"></a><a
+href="slide0229_image1027.png"></a><a href="slide0229_image1028.png"></a><a
+href="slide0229_image1029.png"></a><a href=slide0230.html></a><a
+href="slide0230_image1030.png"></a><a href="slide0230_image1031.png"></a><a
+href="slide0230_image1032.png"></a><a href=slide0231.html></a><a
+href="slide0231_image1033.png"></a><a href="slide0231_image1034.png"></a><a
+href="slide0231_image1035.png"></a><a href=slide0233.html></a><a
+href="slide0233_image1036.png"></a><a href="slide0233_image1037.png"></a><a
+href="slide0233_image1038.png"></a><a href="slide0233_image1039.png"></a><a
+href="slide0233_image1040.png"></a><a href="slide0233_image1041.png"></a><a
+href=slide0234.html></a><a href="slide0234_image1042.png"></a><a
+href="slide0234_image1043.png"></a><a href="slide0234_image1044.png"></a><a
+href="slide0234_image1045.png"></a><a href=slide0199.html></a><a
+href=slide0165.html></a><a href="slide0165_image1046.png"></a><a
+href="slide0165_image1047.png"></a><a href="slide0165_image1048.png"></a><a
+href="slide0165_image1049.png"></a><a href="slide0165_image1050.png"></a><a
+href="slide0165_image1051.png"></a><a href="slide0165_image1052.png"></a><a
+href="slide0165_image1053.png"></a><a href="slide0165_image1054.png"></a><a
+href=slide0235.html></a><a href="slide0235_image1055.png"></a><a
+href="slide0235_image1056.png"></a><a href="slide0235_image1057.png"></a><a
+href="slide0235_image1058.png"></a><a href="slide0235_image1059.png"></a><a
+href="slide0235_image1060.png"></a><a href="slide0235_image1061.png"></a><a
+href="slide0235_image1062.png"></a><a href="slide0235_image1063.png"></a><a
+href="slide0235_image1064.png"></a><a href="slide0235_image1065.png"></a><a
+href="slide0235_image1066.png"></a><a href="slide0235_image1067.png"></a><a
+href=slide0236.html></a><a href="slide0236_image1068.png"></a><a
+href=slide0237.html></a><a href="slide0237_image1069.png"></a><a
+href="slide0237_image1070.png"></a><a href="slide0237_image1071.png"></a><a
+href="slide0237_image1072.png"></a><a href="slide0237_image1073.png"></a><a
+href="slide0237_image1074.png"></a><a href="slide0237_image1075.png"></a><a
+href="slide0237_image1076.png"></a><a href="slide0237_image1077.jpg"></a><a
+href="slide0237_image1078.png"></a><a href=slide0238.html></a><a
+href=slide0238.xml></a><a href="slide0238_image1079.png"></a><a
+href="slide0238_image1080.png"></a><a href="slide0238_image1081.png"></a><a
+href="slide0238_image1082.png"></a><a href="slide0238_image1083.png"></a><a
+href="slide0238_image1084.png"></a><a href="slide0238_image1085.png"></a><a
+href="slide0238_image1086.png"></a><a href="slide0238_image1087.png"></a><a
+href="slide0238_image1088.png"></a><a href="slide0238_image1089.png"></a><a
+href="slide0238_image1090.png"></a><a href="slide0238_image1091.png"></a><a
+href="slide0238_image1092.jpg"></a><a href="slide0238_image1093.png"></a><a
+href="slide0238_image1094.png"></a><a href="slide0238_image1095.png"></a><a
+href="slide0238_image1096.png"></a><a href="slide0238_image1097.png"></a><a
+href="slide0238_image1098.png"></a><a href=slide0176.html></a><a
+href=slide0045.html></a><a href="slide0045_image1099.png"></a><a
+href="slide0045_image1100.png"></a><a href="slide0045_image1101.png"></a><a
+href="slide0045_image1102.png"></a><a href="slide0045_image1103.png"></a><a
+href="slide0045_image1104.png"></a><a href="slide0045_image1105.png"></a><a
+href="slide0045_image1106.png"></a><a href="slide0045_image1107.png"></a><a
+href="slide0045_image1108.jpg"></a><a href="slide0045_image1109.png"></a><a
+href=slide0120.html></a><a href="slide0120_image1110.png"></a><a
+href="slide0120_image1111.jpg"></a><a href="slide0120_image1112.png"></a><a
+href="slide0120_image1113.png"></a><a href="slide0120_image1114.png"></a><a
+href="slide0120_image1115.png"></a><a href="slide0120_image1116.png"></a><a
+href="slide0120_image1117.png"></a><a href=slide0126.html></a><a
+href="slide0126_image1118.png"></a><a href="slide0126_image1119.png"></a><a
+href="slide0126_image1120.png"></a><a href="slide0126_image1121.png"></a><a
+href="slide0126_image1122.png"></a><a href="slide0126_image1123.png"></a><a
+href="slide0126_image1124.png"></a><a href="slide0126_image1125.png"></a><a
+href="slide0126_image1126.png"></a><a href="slide0126_image1127.png"></a><a
+href="slide0126_image1128.png"></a><a href="slide0126_image1129.png"></a><a
+href="slide0126_image1130.png"></a><a href=slide0125.html></a><a
+href="slide0125_image1131.png"></a><a href="slide0125_image1132.png"></a><a
+href="slide0125_image1133.png"></a><a href=slide0131.html></a><a
+href="slide0131_image1134.png"></a><a href="slide0131_image1135.png"></a><a
+href="slide0131_image1136.png"></a><a href="slide0131_image1137.png"></a><a
+href="slide0131_image1138.png"></a><a href="slide0131_image1139.png"></a><a
+href="slide0131_image1140.png"></a><a href="slide0131_image1141.png"></a><a
+href="slide0131_image1142.png"></a><a href="slide0131_image1143.png"></a><a
+href="slide0131_image1144.png"></a><a href="slide0131_image1145.png"></a><a
+href="slide0131_image1146.png"></a><a href=slide0130.html></a><a
+href="slide0130_image1147.png"></a><a href="slide0130_image1148.png"></a><a
+href="slide0130_image1149.png"></a><a href=slide0127.html></a><a
+href="slide0127_image1150.png"></a><a href="slide0127_image1151.png"></a><a
+href="slide0127_image1152.png"></a><a href="slide0127_image1153.png"></a><a
+href=slide0129.html></a><a href="slide0129_image1154.png"></a><a
+href="slide0129_image1155.png"></a><a href="slide0129_image1156.png"></a><a
+href="slide0129_image1157.png"></a><a href=slide0002.html></a><a
+href=slide0012.html></a><a href=master01.html></a><a
+href="master03_stylesheet.css"></a><a href=script.js></a><a
+href="../Cargo_Chief_Site_V14.html"></a><a href=fullscreen.html></a><a
+href="notes_flag.gif"></a><a href=buttons.gif></a><a href=frame.html></a><a
+href=outline.html></a></div>
+
+</body>
+
+</html>

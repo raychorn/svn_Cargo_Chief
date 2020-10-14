@@ -1,0 +1,19 @@
+server {
+        listen       80;
+    
+        server_name preview.cargochief.com www.cargochief.com cargochief.com;
+        root /usr/local/cargochief/cargochief;
+
+        location / {
+            proxy_pass      http://127.0.0.1:8001;
+            include /etc/nginx/proxy_params;
+        }
+
+        location /static/ {
+            expires 30d;
+        }
+
+        location /media/ {
+            root /usr/local/cargochief/_Django-1.3_Multi-Threaded/django/contrib/admin;
+        }
+}

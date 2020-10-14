@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title> ©CargoChief  v1.0, All Rights Reserved. (2012-32-16 07:32 AM)</title>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-27435716-1']);
+		_gaq.push(['_setDomainName', 'cargochief.com']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+    </script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+		var url1 = 'http://cargoguru.appspot.com/main.html';
+		var url2 = 'http://www1.cargochief.com/main.html';
+		var url3 = '/_index.html';
+		
+		var _t_ = -1;
+		var _b_ = true;
+		
+		var __url__ = null;
+
+		function randomXToY(minVal,maxVal,floatVal) {
+			var randVal = minVal+(Math.random()*(maxVal-minVal));
+			return typeof floatVal=='undefined'?Math.round(randVal):randVal.toFixed(floatVal);
+		}
+			
+		$(document).ready(function() {
+			$('body').ajaxError(function(e, jqxhr, settings, exception) {
+				if (_b_) {
+				}
+			});
+
+			_t_ = setTimeout(function(){$('#iframe1').attr('src',url3);},10000);
+			
+			var _i_ = randomXToY(0,1);
+			
+			if (_i_ == 0) {
+				__url__ = url1;
+				$('#iframe1').attr('src',url1);
+			} else {
+				__url__ = url2;
+				$('#iframe1').attr('src',url2);
+			}
+
+			doEnsureIframesLoadedMethod();
+		});
+
+		function actionIframe(iframe) {
+			if (_t_ != -1) {
+				_b_ = false;
+				clearTimeout(_t_);
+				_t_ = -1;
+			}
+			// Read the contents from the URL and determine if the gateway is good or bad...
+			$.get("/read_contents.php", 
+				function(response) { 
+					if ( (response) && (response.indexOf('502 Bad Gateway') > -1) ) {
+						$('#iframe1').attr('src',url1); // google app engine is never down, right ?!?
+					}
+				}
+			);
+		}
+		function doEnsureIframesLoadedMethod() {
+			var iFrames = document.getElementsByTagName('iframe');
+		
+			function iAction() {
+				for (var i = 0, j = iFrames.length; i < j; i++) {
+					actionIframe(iFrames[i]);
+				}
+			}
+			
+			if ($.browser.safari || $.browser.opera) {
+				$('iframe').load(function() {
+					setTimeout(iAction, 0);
+				});
+			
+				for (var i = 0, j = iFrames.length; i < j; i++) {
+					var iSource = iFrames[i].src;
+					iFrames[i].src = '';
+					iFrames[i].src = iSource;
+				}
+			} else {
+				$('iframe').load(function() {
+					actionIframe(this);
+				});
+			}
+		}
+  
+	</script>
+  </head>
+<body>
+<center>
+<iframe id="iframe1" src="/_index.html" width="1000" height="800" scrolling="no" frameborder="0" marginwidth="0" marginheight="0"/>
+</center>
+</html>

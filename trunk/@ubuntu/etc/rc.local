@@ -1,0 +1,23 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+#if [ -f /usr/local/cargochief/bin/zoneclient/amazon_ec2.py ]; then
+#    if [ -f /usr/local/cargochief/bin/zoneclient/run2.sh ]; then
+#	(sleep 90; /usr/local/cargochief/bin/zoneclient/run2.sh) &
+#    fi
+#fi
+
+# Establish an ssh tunnel to other server...
+sudo -u tunnel autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L22222:23.21.129.225:2222 -p 2222 root@23.21.129.225
+
+exit 0

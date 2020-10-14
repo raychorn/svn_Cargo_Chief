@@ -1,0 +1,8 @@
+check process tornadowsgi with pidfile /var/run/cargochief-tornado.pid
+  start program = "/usr/local/cargochief/starttornado.sh"
+  stop program = "/usr/local/cargochief/stoptornado.sh"
+  if cpu > 80% for 5 times within 15 cycles then alert
+  if cpu > 90% for 10 times within 15 cycles then restart
+  if totalmem > 70.0 MB for 10 times within 15 cycles then restart
+  group server
+
